@@ -8,6 +8,7 @@ import demoCompactDialogue from '../../데모/03_간소_대화_모드.md?raw';
 import mainStory from '../../정규/01_퀘스트_스토리_SSOT.md?raw';
 import mainDialogue from '../../정규/02_퀘스트_대화집.md?raw';
 import mainVideos from '../../정규/03_영상_모음.md?raw';
+import mainCapsuleCandidates from '../../정규/04_스팀_캡슐_후보.md?raw';
 
 export type StoryDoc = {
   slug: string;
@@ -83,6 +84,14 @@ export const docs: StoryDoc[] = [
     source: '정규/03_영상_모음.md',
     body: mainVideos,
   },
+  {
+    slug: 'main/capsule-candidates',
+    title: '스팀 캡슐 후보',
+    eyebrow: 'Main · Capsule Concepts',
+    description: '세로형 채색 후보와 세로·가로 스팀 캡슐 구도 러프를 비교하는 작업 페이지입니다.',
+    source: '정규/04_스팀_캡슐_후보.md',
+    body: mainCapsuleCandidates,
+  },
 ];
 
 const wikiLinks: Record<string, string> = {
@@ -93,6 +102,7 @@ const wikiLinks: Record<string, string> = {
   '정규/01_퀘스트_스토리_SSOT': '/main/quest-story/',
   '정규/02_퀘스트_대화집': '/main/dialogue/',
   '정규/03_영상_모음': '/main/videos/',
+  '정규/04_스팀_캡슐_후보': '/main/capsule-candidates/',
 };
 
 marked.setOptions({ gfm: true, breaks: false });
