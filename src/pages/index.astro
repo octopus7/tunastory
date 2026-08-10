@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { docs } from '../lib/docs';
+
+const characterDoc = docs.find((doc) => doc.slug === 'characters')!;
+const demoDocs = docs.filter((doc) => doc.slug.startsWith('demo/'));
+const mainDocs = docs.filter((doc) => doc.slug.startsWith('main/'));
+---
+
+<BaseLayout activeSlug="home">
+  <section class="hero">
+    <div class="hero-copy">
+      <span class="kicker">TUNA SWEEPER · STORY BIBLE</span>
+      <h1>깨어난 소녀와,<br /><span>비밀을 품은 두더지.</span></h1>
+      <p>데모와 정규 버전의 퀘스트, 대화, 등장인물 설정을 한곳에서 읽는 Tuna Sweeper 스토리 아카이브입니다.</p>
+      <div class="hero-actions">
+        <a class="primary-button" href="/characters/">등장인물부터 읽기 <span>→</span></a>
+        <a class="text-button" href="/guide/">문서 기준 살펴보기</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-label="루나와 두더지 관계 도식">
+      <div class="orbit orbit-one"></div>
+      <div class="orbit orbit-two"></div>
+      <div class="character luna">
+        <span class="portrait">L</span>
+        <div><small>PLAYER</small><strong>루나</strong><em>Bionic Android</em></div>
+      </div>
+      <div class="connection"><span>GUIDE · TRUST · MYSTERY</span></div>
+      <div class="character mole">
+        <span class="portrait">M</span>
+        <div><small>GUIDE</small><strong>두더지</strong><em>Identity Unknown</em></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="manifesto">
+    <span>CORE RELATIONSHIP</span>
+    <blockquote>“세상을 처음 알아가는 루나<br />+ 이미 많은 것을 알고 있지만<br />정체를 밝히지 않는 두더지”</blockquote>
+  </section>
+
+  <section class="section-block">
+    <div class="section-heading">
+      <div><span>01</span><h2>등장인물 기준</h2></div>
+      <p>모든 버전에 공통 적용되는 캐릭터 설정</p>
+    </div>
+    <a class="feature-card" href={`/${characterDoc.slug}/`}>
+      <div class="feature-number">L / M</div>
+      <div>
+        <span class="card-label">{characterDoc.eyebrow}</span>
+        <h3>{characterDoc.title}</h3>
+        <p>{characterDoc.description}</p>
+      </div>
+      <span class="card-arrow">↗</span>
+    </a>
+  </section>
+
+  <section class="section-block">
+    <div class="section-heading">
+      <div><span>02</span><h2>두 개의 스토리 세트</h2></div>
+      <p>독립된 데모와 본편의 정규 연속성</p>
+    </div>
+    <div class="story-grid">
+      <article class="story-set demo-set">
+        <div class="set-top"><span>DEMO VERSION</span><strong>01</strong></div>
+        <h3>작고 선명한<br />생활형 구조 임무</h3>
+        <p>화장실 고장으로 시작해 취수 시설을 복구하고 참치캔을 챙기는 독립 단편.</p>
+        <ul>
+          {demoDocs.map((doc) => <li><a href={`/${doc.slug}/`}>{doc.title}<span>→</span></a></li>)}
+        </ul>
+      </article>
+      <article class="story-set main-set">
+        <div class="set-top"><span>MAIN VERSION</span><strong>02</strong></div>
+        <h3>벙커를 집으로<br />만드는 긴 여정</h3>
+        <p>기상, 제1생활권, 고급보안구역, 최종보스와 첫 식탁으로 이어지는 정규판.</p>
+        <ul>
+          {mainDocs.map((doc) => <li><a href={`/${doc.slug}/`}>{doc.title}<span>→</span></a></li>)}
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="principles">
+    <div><span>01</span><strong>IMPLEMENTATION<br />INDEPENDENT</strong><p>현재 구현 퀘스트가 아니라 스토리 문서를 기준으로 관리합니다.</p></div>
+    <div><span>02</span><strong>TWO DISTINCT<br />CONTINUITIES</strong><p>데모와 정규 버전의 사건을 섞지 않습니다.</p></div>
+    <div><span>03</span><strong>MYSTERY<br />PRESERVED</strong><p>두더지의 정체와 지식의 출처는 끝까지 설명하지 않습니다.</p></div>
+  </section>
+</BaseLayout>

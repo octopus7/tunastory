@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { docs, renderMarkdown, type StoryDoc } from '../lib/docs';
+
+export function getStaticPaths() {
+  return docs.map((doc) => ({ params: { slug: doc.slug }, props: { doc } }));
+}
+
+interface Props { doc: StoryDoc }
+const { doc } = Astro.props;
+const html = renderMarkdown(doc.body);
+---
+
+<BaseLayout title={doc.title} description={doc.description} activeSlug={doc.slug}>
+  <article class="document-page">
+    <header class="document-header">
+      <span class="kicker">{doc.eyebrow}</span>
+      <h1>{doc.title}</h1>
+      <p>{doc.description}</p>
+      <div class="document-meta">
+        <span>MARKDOWN → HTML</span>
+        <a href={`https://github.com/octopus7/tunastory/blob/main/${encodeURI(doc.source)}`} target="_blank" rel="noreferrer">원본 보기 ↗</a>
+      </div>
+    </header>
+    <div class="document-body" set:html={html} />
+    <nav class="document-end" aria-label="문서 종료">
+      <span>END OF DOCUMENT</span>
+      <a href="/">문서 홈으로 돌아가기 →</a>
+    </nav>
+  </article>
+</BaseLayout>

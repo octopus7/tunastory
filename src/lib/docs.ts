@@ -1,0 +1,103 @@
+import { marked } from 'marked';
+
+import readme from '../../README.md?raw';
+import characters from '../../01_등장인물_설정.md?raw';
+import demoFlow from '../../데모/01_퀘스트_진행_트리.md?raw';
+import demoDialogue from '../../데모/02_스토리_및_대화_대본.md?raw';
+import mainStory from '../../정규/01_퀘스트_스토리_SSOT.md?raw';
+import mainDialogue from '../../정규/02_퀘스트_대화집.md?raw';
+
+export type StoryDoc = {
+  slug: string;
+  title: string;
+  eyebrow: string;
+  description: string;
+  source: string;
+  body: string;
+};
+
+export const docs: StoryDoc[] = [
+  {
+    slug: 'guide',
+    title: '스토리 정리 작업본',
+    eyebrow: 'Guide',
+    description: '문서의 목적, 적용 원칙, 버전별 구조와 현재 남아 있는 검토 항목을 확인합니다.',
+    source: 'README.md',
+    body: readme,
+  },
+  {
+    slug: 'characters',
+    title: '등장인물 설정',
+    eyebrow: 'Characters',
+    description: '루나와 두더지의 외형, 생활, 역할, 관계 및 스토리 작성 기준입니다.',
+    source: '01_등장인물_설정.md',
+    body: characters,
+  },
+  {
+    slug: 'demo/quest-flow',
+    title: '데모 퀘스트 진행 트리',
+    eyebrow: 'Demo · Quest Flow',
+    description: '화장실 고장에서 시작해 취수 시설 복구와 마지막 참치캔으로 이어지는 데모 흐름입니다.',
+    source: '데모/01_퀘스트_진행_트리.md',
+    body: demoFlow,
+  },
+  {
+    slug: 'demo/dialogue',
+    title: '데모 스토리 및 대화 대본',
+    eyebrow: 'Demo · Dialogue',
+    description: '데모의 장면별 진행과 루나·두더지 대화를 정리한 전체 대본입니다.',
+    source: '데모/02_스토리_및_대화_대본.md',
+    body: demoDialogue,
+  },
+  {
+    slug: 'main/quest-story',
+    title: '정규 퀘스트 스토리 SSOT',
+    eyebrow: 'Main · Story SSOT',
+    description: '정규판의 맵 진행, 메인·선택 퀘스트, 아이템과 엔딩 조건을 담은 기준 문서입니다.',
+    source: '정규/01_퀘스트_스토리_SSOT.md',
+    body: mainStory,
+  },
+  {
+    slug: 'main/dialogue',
+    title: '정규 퀘스트 대화집',
+    eyebrow: 'Main · Dialogue',
+    description: 'M01~M20과 선택 퀘스트의 시작, 요구, 부족, 완료 대사를 모은 대화집입니다.',
+    source: '정규/02_퀘스트_대화집.md',
+    body: mainDialogue,
+  },
+];
+
+const wikiLinks: Record<string, string> = {
+  '01_등장인물_설정': '/characters/',
+  '데모/01_퀘스트_진행_트리': '/demo/quest-flow/',
+  '데모/02_스토리_및_대화_대본': '/demo/dialogue/',
+  '정규/01_퀘스트_스토리_SSOT': '/main/quest-story/',
+  '정규/02_퀘스트_대화집': '/main/dialogue/',
+};
+
+marked.setOptions({ gfm: true, breaks: false });
+
+export function renderMarkdown(markdown: string): string {
+  const normalized = markdown
+    .replace(/^> \[!(IMPORTANT|NOTE|WARNING|TIP)\]\s*(.*)$/gm, (_match, kind, label) => {
+      const names: Record<string, string> = { IMPORTANT: '중요', NOTE: '참고', WARNING: '주의', TIP: '팁' };
+      return `> **${label || names[kind]}**`;
+    })
+    .replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_match, target, label) => {
+      const href = wikiLinks[target] ?? '#';
+      const text = label ?? target.split('/').pop()?.replace(/^\d+_/, '') ?? target;
+      return `[${text}](${href})`;
+    });
+
+  return String(marked.parse(normalized));
+}
+
+export function getDoc(slug: string): StoryDoc | undefined {
+  return docs.find((doc) => doc.slug === slug);
+}
+
+export const groups = [
+  { label: '시작', docs: docs.filter((doc) => !doc.slug.includes('/')) },
+  { label: '데모 버전', docs: docs.filter((doc) => doc.slug.startsWith('demo/')) },
+  { label: '정규 버전', docs: docs.filter((doc) => doc.slug.startsWith('main/')) },
+];
