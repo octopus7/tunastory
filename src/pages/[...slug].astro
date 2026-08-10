@@ -8,7 +8,49 @@ export function getStaticPaths() {
 
 interface Props { doc: StoryDoc }
 const { doc } = Astro.props;
-const html = renderMarkdown(doc.body);
+let html = renderMarkdown(doc.body);
+
+function characterGallery(character: 'luna' | 'mole', name: string, portraitAlt: string, fullAlt: string) {
+  return `
+    <section class="character-reference" aria-label="${name} 캐릭터 이미지">
+      <div class="character-reference__heading">
+        <span>VISUAL REFERENCE · CURRENT VERSION</span>
+        <strong>${name}</strong>
+      </div>
+      <div class="character-reference__grid">
+        <figure class="character-shot character-shot--portrait">
+          <img src="/images/characters/${character}-portrait.webp" alt="${portraitAlt}" width="768" height="768" loading="lazy" />
+          <figcaption><span>PORTRAIT</span><strong>상반신 초상화</strong></figcaption>
+        </figure>
+        <figure class="character-shot character-shot--full">
+          <img src="/images/characters/${character}-full.webp" alt="${fullAlt}" width="768" height="1152" loading="lazy" />
+          <figcaption><span>FULL BODY</span><strong>전신 설정화</strong></figcaption>
+        </figure>
+      </div>
+    </section>`;
+}
+
+if (doc.slug === 'characters') {
+  html = html
+    .replace(
+      '<h2>1. 루나 (Luna)</h2>',
+      `<h2>1. 루나 (Luna)</h2>${characterGallery(
+        'luna',
+        '루나',
+        '은회색 양갈래와 파란 눈, 검은 리본과 메이드 복장의 루나 상반신 초상화',
+        '검정과 흰색 메이드 복장을 입은 루나의 머리부터 신발까지 전신 설정화',
+      )}`,
+    )
+    .replace(
+      '<h2>2. 두더지</h2>',
+      `<h2>2. 두더지</h2>${characterGallery(
+        'mole',
+        '두더지',
+        '시력이 좋지 않아 눈을 감고 있는 두더지 상반신 초상화',
+        '눈을 감고 두 발로 서서 한 손을 들어 인사하는 두더지 전신 설정화',
+      )}`,
+    );
+}
 ---
 
 <BaseLayout title={doc.title} description={doc.description} activeSlug={doc.slug}>
