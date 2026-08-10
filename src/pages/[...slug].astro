@@ -11,6 +11,8 @@ const { doc } = Astro.props;
 let html = renderMarkdown(doc.body);
 
 function characterGallery(character: 'luna' | 'mole', name: string, portraitAlt: string, fullAlt: string) {
+  const portraitHeight = character === 'luna' ? 960 : 844;
+  const fullHeight = character === 'luna' ? 1152 : 864;
   return `
     <section class="character-reference" aria-label="${name} 캐릭터 이미지">
       <div class="character-reference__heading">
@@ -22,10 +24,10 @@ function characterGallery(character: 'luna' | 'mole', name: string, portraitAlt:
       </div>
       <div class="character-reference__grid">
         <figure class="character-shot character-shot--portrait">
-          <img src="/images/characters/${character}-portrait.webp" alt="${portraitAlt}" width="768" height="768" loading="lazy" />
+          <img src="/images/characters/${character}-portrait.webp" alt="${portraitAlt}" width="768" height="${portraitHeight}" loading="lazy" />
         </figure>
         <figure class="character-shot character-shot--full">
-          <img src="/images/characters/${character}-full.webp" alt="${fullAlt}" width="768" height="1152" loading="lazy" />
+          <img src="/images/characters/${character}-full.webp" alt="${fullAlt}" width="768" height="${fullHeight}" loading="lazy" />
         </figure>
       </div>
     </section>`;
