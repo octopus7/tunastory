@@ -35,7 +35,7 @@ const deployedAt = BUILD_TIME;
   <body>
     <header class="topbar">
       <a class="brand" href="/" aria-label="Tuna Story 홈">
-        <span class="brand-mark" aria-hidden="true">T</span>
+        <img class="brand-mark" src="/images/brand/tuna-can-mark.webp" alt="" width="128" height="128" aria-hidden="true" />
         <span><strong>TUNA</strong><em>STORY ARCHIVE</em></span>
       </a>
       <div class="topbar-actions">
@@ -49,6 +49,9 @@ const deployedAt = BUILD_TIME;
         <nav>
           <a class:list={["home-link", { active: activeSlug === 'home' }]} href="/">
             <span>⌂</span> 문서 홈
+          </a>
+          <a class:list={["home-link", { active: activeSlug === 'gallery' }]} href="/gallery/">
+            <span>◈</span> 갤러리
           </a>
           {groups.map((group) => (
             <section class="nav-group">
