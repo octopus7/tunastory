@@ -22,6 +22,21 @@ const html = renderMarkdown(doc.body);
         <a href={`https://github.com/octopus7/tunastory/blob/main/${encodeURI(doc.source)}`} target="_blank" rel="noreferrer">원본 보기 ↗</a>
       </div>
     </header>
+    {doc.slug === 'characters' && (
+      <figure class="character-keyart">
+        <img
+          src="/images/luna-mole-character-intro.webp"
+          alt="기지 관제실에서 지도를 보며 대화하는 루나와 헤드셋을 쓴 두더지"
+          width="1536"
+          height="1024"
+          loading="eager"
+        />
+        <figcaption>
+          <span>CHARACTER RELATIONSHIP · CURRENT VERSION</span>
+          <strong>세상을 알아가는 루나와, 비밀을 품은 안내자 두더지</strong>
+        </figcaption>
+      </figure>
+    )}
     <div class="document-body" set:html={html} />
     <nav class="document-end" aria-label="문서 종료">
       <span>END OF DOCUMENT</span>
