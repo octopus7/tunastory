@@ -4,6 +4,7 @@ import readme from '../../README.md?raw';
 import characters from '../../01_등장인물_설정.md?raw';
 import demoFlow from '../../데모/01_퀘스트_진행_트리.md?raw';
 import demoDialogue from '../../데모/02_스토리_및_대화_대본.md?raw';
+import demoCompactDialogue from '../../데모/03_간소_대화_모드.md?raw';
 import mainStory from '../../정규/01_퀘스트_스토리_SSOT.md?raw';
 import mainDialogue from '../../정규/02_퀘스트_대화집.md?raw';
 
@@ -50,6 +51,14 @@ export const docs: StoryDoc[] = [
     body: demoDialogue,
   },
   {
+    slug: 'demo/compact-dialogue',
+    title: '데모 간소 대화 모드',
+    eyebrow: 'Demo · Compact Dialogue',
+    description: '각 장면을 루나 한 줄과 두더지 한 줄, 정확히 2대사로 압축한 데모 대본입니다.',
+    source: '데모/03_간소_대화_모드.md',
+    body: demoCompactDialogue,
+  },
+  {
     slug: 'main/quest-story',
     title: '정규 퀘스트 스토리 SSOT',
     eyebrow: 'Main · Story SSOT',
@@ -71,6 +80,7 @@ const wikiLinks: Record<string, string> = {
   '01_등장인물_설정': '/characters/',
   '데모/01_퀘스트_진행_트리': '/demo/quest-flow/',
   '데모/02_스토리_및_대화_대본': '/demo/dialogue/',
+  '데모/03_간소_대화_모드': '/demo/compact-dialogue/',
   '정규/01_퀘스트_스토리_SSOT': '/main/quest-story/',
   '정규/02_퀘스트_대화집': '/main/dialogue/',
 };
@@ -89,7 +99,7 @@ export function renderMarkdown(markdown: string): string {
       return `[${text}](${href})`;
     });
 
-  return String(marked.parse(normalized));
+  return String(marked.parse(normalized)).replace(/<img /g, '<img loading="lazy" decoding="async" ');
 }
 
 export function getDoc(slug: string): StoryDoc | undefined {
