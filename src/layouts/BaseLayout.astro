@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { groups } from '../lib/docs';
+import { BUILD_TIME } from '../lib/build';
 
 interface Props {
   title?: string;
@@ -14,6 +15,8 @@ const {
   activeSlug = '',
 } = Astro.props;
 const pageTitle = title === 'Tuna Story' ? title : `${title} · Tuna Story`;
+// Rendered into the static HTML during each Cloudflare Pages build.
+const deployedAt = BUILD_TIME;
 ---
 
 <!doctype html>
@@ -67,11 +70,65 @@ const pageTitle = title === 'Tuna Story' ? title : `${title} · Tuna Story`;
 
       <main class="main-content">
         <slot />
-        <footer>
-          <span>TUNA STORY ARCHIVE</span>
-          <span>Built with Astro · Deployed on Cloudflare Pages</span>
+        <footer class:list={["site-footer", { "site-footer--home": activeSlug === 'home' }]}>
+          {activeSlug === 'home' && (
+            <section class="site-keeper" aria-label="사이트 관리 정보">
+              <img
+                src="/images/mole-sleeping-128.webp"
+                alt="눈을 감고 졸고 있는 두더지"
+                width="128"
+                height="128"
+                loading="lazy"
+              />
+              <div>
+                <span>SITE KEEPER · MOLE</span>
+                <strong>이 페이지는 두더지가 관리하고 있습니다.</strong>
+                <p>지금은 잠깐 졸고 있는 중입니다.</p>
+              </div>
+            </section>
+          )}
+          <div class="footer-meta">
+            <span>TUNA STORY ARCHIVE</span>
+            <div class="deploy-info">
+              <span>LAST DEPLOY</span>
+              <time datetime={deployedAt} data-deployed-at={deployedAt}>{deployedAt}</time>
+            </div>
+            <span>Built with Astro · Deployed on Cloudflare Pages</span>
+          </div>
         </footer>
       </main>
     </div>
+    <script is:inline>
+      (() => {
+        const time = document.querySelector('[data-deployed-at]');
+        if (!(time instanceof HTMLTimeElement)) return;
+
+        const deployed = new Date(time.dataset.deployedAt || time.dateTime);
+        if (Number.isNaN(deployed.getTime())) return;
+
+        const absolute = new Intl.DateTimeFormat(navigator.language || 'ko-KR', {
+          dateStyle: 'medium',
+          timeStyle: 'short',
+        });
+
+        const update = () => {
+          const seconds = Math.floor(Math.max(0, Date.now() - deployed.getTime()) / 1000);
+          const exact = absolute.format(deployed);
+
+          if (seconds <= 3 * 60 * 60) {
+            if (seconds < 60) time.textContent = `${seconds}초 전`;
+            else if (seconds < 60 * 60) time.textContent = `${Math.floor(seconds / 60)}분 전`;
+            else time.textContent = `${Math.floor(seconds / 3600)}시간 전`;
+            time.title = exact;
+          } else {
+            time.textContent = exact;
+            time.removeAttribute('title');
+          }
+        };
+
+        update();
+        window.setInterval(update, 1000);
+      })();
+    </script>
   </body>
 </html>
