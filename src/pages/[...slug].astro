@@ -14,17 +14,18 @@ function characterGallery(character: 'luna' | 'mole', name: string, portraitAlt:
   return `
     <section class="character-reference" aria-label="${name} 캐릭터 이미지">
       <div class="character-reference__heading">
-        <span>VISUAL REFERENCE · CURRENT VERSION</span>
-        <strong>${name}</strong>
+        <div><span>VISUAL REFERENCE · CURRENT VERSION</span><strong>${name}</strong></div>
+        <div class="character-reference__controls" aria-label="${name} 이미지 탐색">
+          <button type="button" data-slide="prev" aria-label="이전 이미지">←</button>
+          <button type="button" data-slide="next" aria-label="다음 이미지">→</button>
+        </div>
       </div>
       <div class="character-reference__grid">
         <figure class="character-shot character-shot--portrait">
           <img src="/images/characters/${character}-portrait.webp" alt="${portraitAlt}" width="768" height="768" loading="lazy" />
-          <figcaption><span>PORTRAIT</span><strong>상반신 초상화</strong></figcaption>
         </figure>
         <figure class="character-shot character-shot--full">
           <img src="/images/characters/${character}-full.webp" alt="${fullAlt}" width="768" height="1152" loading="lazy" />
-          <figcaption><span>FULL BODY</span><strong>전신 설정화</strong></figcaption>
         </figure>
       </div>
     </section>`;
@@ -86,3 +87,34 @@ if (doc.slug === 'characters') {
     </nav>
   </article>
 </BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.character-reference').forEach((section) => {
+    const track = section.querySelector<HTMLElement>('.character-reference__grid');
+    const cards = [...section.querySelectorAll<HTMLElement>('.character-shot')];
+    const previous = section.querySelector<HTMLButtonElement>('[data-slide="prev"]');
+    const next = section.querySelector<HTMLButtonElement>('[data-slide="next"]');
+    if (!track || !previous || !next || cards.length === 0) return;
+
+    const cardPosition = (card: HTMLElement) => card.offsetLeft - track.offsetLeft;
+    const activeIndex = () => cards.reduce(
+      (best, card, index) => Math.abs(cardPosition(card) - track.scrollLeft) < Math.abs(cardPosition(cards[best]) - track.scrollLeft) ? index : best,
+      0,
+    );
+    const updateControls = () => {
+      const active = activeIndex();
+      previous.disabled = active === 0;
+      next.disabled = active === cards.length - 1;
+    };
+    const move = (direction: number) => {
+      const target = Math.max(0, Math.min(cards.length - 1, activeIndex() + direction));
+      track.scrollTo({ left: cardPosition(cards[target]), behavior: 'smooth' });
+    };
+
+    previous.addEventListener('click', () => move(-1));
+    next.addEventListener('click', () => move(1));
+    track.addEventListener('scroll', updateControls, { passive: true });
+    new ResizeObserver(updateControls).observe(track);
+    updateControls();
+  });
+</script>
