@@ -2,6 +2,7 @@ import { marked } from 'marked';
 
 import readme from '../../README.md?raw';
 import characters from '../../01_등장인물_설정.md?raw';
+import worldbuilding from '../../02_세계관_설정.md?raw';
 import demoFlow from '../../데모/01_퀘스트_진행_트리.md?raw';
 import demoDialogue from '../../데모/02_스토리_및_대화_대본.md?raw';
 import demoCompactDialogue from '../../데모/03_간소_대화_모드.md?raw';
@@ -35,6 +36,14 @@ export const docs: StoryDoc[] = [
     description: '루나와 두더지의 외형, 생활, 역할, 관계 및 스토리 작성 기준입니다.',
     source: '01_등장인물_설정.md',
     body: characters,
+  },
+  {
+    slug: 'worldbuilding',
+    title: '세계관 설정',
+    eyebrow: 'Worldbuilding · CATch Can Co.',
+    description: '참치 통조림 회사 CATch Can Co.의 시대 원칙, 역대 사장, 로고와 제품 디자인 기준입니다.',
+    source: '02_세계관_설정.md',
+    body: worldbuilding,
   },
   {
     slug: 'demo/quest-flow',
@@ -96,6 +105,7 @@ export const docs: StoryDoc[] = [
 
 const wikiLinks: Record<string, string> = {
   '01_등장인물_설정': '/characters/',
+  '02_세계관_설정': '/worldbuilding/',
   '데모/01_퀘스트_진행_트리': '/demo/quest-flow/',
   '데모/02_스토리_및_대화_대본': '/demo/dialogue/',
   '데모/03_간소_대화_모드': '/demo/compact-dialogue/',
