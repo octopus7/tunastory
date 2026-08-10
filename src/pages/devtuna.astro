@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="devTuna 소개"
+  description="Tuna Sweeper 개발사 devTuna의 공식 로고 인트로 영상"
+  activeSlug="devtuna"
+>
+  <article class="devtuna-page">
+    <header class="devtuna-hero">
+      <span>DEVELOPER · LOGO INTRO</span>
+      <h1>dev<span>Tuna</span></h1>
+      <p>Tuna Sweeper 개발사 devTuna의 로고 인트로 영상입니다.</p>
+    </header>
+
+    <section class="devtuna-stage" aria-labelledby="devtuna-video-title">
+      <div class="devtuna-video-frame">
+        <video
+          controls
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="/videos/devtuna-logo-intro-poster.webp"
+          width="854"
+          height="480"
+          aria-describedby="devtuna-video-note"
+        >
+          <source src="/videos/devtuna-logo-intro.mp4" type="video/mp4" />
+          <source src="/videos/devtuna-logo-intro.mov" type="video/quicktime" />
+          브라우저에서 영상을 재생할 수 없습니다.
+        </video>
+      </div>
+
+      <div class="devtuna-details">
+        <div>
+          <span>OFFICIAL IDENT</span>
+          <h2 id="devtuna-video-title">고양이와 참치의 10초 인트로</h2>
+          <p id="devtuna-video-note">낚싯대를 든 고양이와 참치가 devTuna 워드마크로 이어지는 개발사 로고 애니메이션입니다.</p>
+        </div>
+        <dl>
+          <div><dt>재생 시간</dt><dd>10초</dd></div>
+          <div><dt>화면</dt><dd>854 × 480 · 24fps</dd></div>
+          <div><dt>원본</dt><dd>H.264 · AAC · MOV</dd></div>
+        </dl>
+        <a class="devtuna-download" href="/videos/devtuna-logo-intro.mov" download>원본 MOV 다운로드 ↓</a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .devtuna-page{background:#000;color:#fff;min-height:100vh;overflow:hidden}.devtuna-hero{max-width:1080px;margin:0 auto;padding:clamp(68px,10vw,130px) clamp(24px,6vw,72px) 58px;text-align:center}.devtuna-hero>span,.devtuna-details>div>span{font:700 9px Inter,sans-serif;letter-spacing:.2em;color:#77b9e6}.devtuna-hero h1{margin:25px 0 18px;font:600 clamp(64px,11vw,144px)/.92 Inter,system-ui,sans-serif;letter-spacing:-.075em}.devtuna-hero h1 span{color:#55aee7}.devtuna-hero p{margin:0 auto;max-width:560px;font-family:'Gowun Dodum',sans-serif;font-size:clamp(16px,2vw,21px);line-height:1.65;color:rgba(255,255,255,.7)}.devtuna-stage{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,66px) clamp(80px,11vw,150px)}.devtuna-video-frame{padding:clamp(8px,1.2vw,14px);background:#151515;border-radius:18px;box-shadow:0 34px 100px rgba(0,0,0,.58);border:1px solid rgba(255,255,255,.12)}.devtuna-video-frame video{display:block;width:100%;height:auto;aspect-ratio:854/480;background:#fff;border-radius:10px}.devtuna-details{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.42fr);gap:36px 72px;padding:46px 4px 0;align-items:start}.devtuna-details h2{font-family:'Gowun Dodum',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:400;letter-spacing:-.045em;line-height:1.2;margin:14px 0 15px}.devtuna-details p{max-width:650px;margin:0;font-family:'Gowun Dodum',sans-serif;font-size:15px;line-height:1.75;color:rgba(255,255,255,.62)}.devtuna-details dl{margin:2px 0 0}.devtuna-details dl>div{display:flex;justify-content:space-between;gap:20px;padding:13px 0;border-top:1px solid rgba(255,255,255,.16)}.devtuna-details dl>div:last-child{border-bottom:1px solid rgba(255,255,255,.16)}.devtuna-details dt,.devtuna-details dd{margin:0;font:600 10px Inter,sans-serif;letter-spacing:.08em}.devtuna-details dt{color:rgba(255,255,255,.46)}.devtuna-details dd{text-align:right;color:rgba(255,255,255,.84)}.devtuna-download{grid-column:1/-1;justify-self:start;display:inline-flex;align-items:center;min-height:44px;padding:0 19px;border:1px solid rgba(255,255,255,.32);border-radius:999px;font:600 12px Inter,sans-serif;letter-spacing:.03em;transition:.2s ease}.devtuna-download:hover{background:#fff;color:#111;border-color:#fff}.devtuna-download:focus-visible{outline:2px solid #55aee7;outline-offset:4px}@media(max-width:720px){.devtuna-hero{padding:58px 22px 38px}.devtuna-hero h1{font-size:64px}.devtuna-stage{padding:0 14px 78px}.devtuna-video-frame{border-radius:12px;padding:6px}.devtuna-video-frame video{border-radius:7px}.devtuna-details{grid-template-columns:1fr;gap:28px;padding:34px 8px 0}.devtuna-details h2{font-size:30px}.devtuna-download{grid-column:auto}}
+</style>

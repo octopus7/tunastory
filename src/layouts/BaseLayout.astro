@@ -53,6 +53,9 @@ const deployedAt = BUILD_TIME;
           <a class:list={["home-link", { active: activeSlug === 'gallery' }]} href="/gallery/">
             <span>◈</span> 갤러리
           </a>
+          <a class:list={["home-link", { active: activeSlug === 'devtuna' }]} href="/devtuna/">
+            <span>◉</span> devTuna 소개
+          </a>
           {groups.map((group) => (
             <section class="nav-group">
               <p>{group.label}</p>
