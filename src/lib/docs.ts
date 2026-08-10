@@ -5,6 +5,7 @@ import characters from '../../01_등장인물_설정.md?raw';
 import demoFlow from '../../데모/01_퀘스트_진행_트리.md?raw';
 import demoDialogue from '../../데모/02_스토리_및_대화_대본.md?raw';
 import demoCompactDialogue from '../../데모/03_간소_대화_모드.md?raw';
+import demoVideos from '../../데모/04_영상_모음.md?raw';
 import mainStory from '../../정규/01_퀘스트_스토리_SSOT.md?raw';
 import mainDialogue from '../../정규/02_퀘스트_대화집.md?raw';
 
@@ -59,6 +60,14 @@ export const docs: StoryDoc[] = [
     body: demoCompactDialogue,
   },
   {
+    slug: 'demo/videos',
+    title: '데모 영상 모음',
+    eyebrow: 'Demo · Video Archive',
+    description: '프롤로그 첫 등장 등 데모 장면의 짧은 영상 컷을 A/B로 비교하는 아카이브입니다.',
+    source: '데모/04_영상_모음.md',
+    body: demoVideos,
+  },
+  {
     slug: 'main/quest-story',
     title: '정규 퀘스트 스토리 SSOT',
     eyebrow: 'Main · Story SSOT',
@@ -81,6 +90,7 @@ const wikiLinks: Record<string, string> = {
   '데모/01_퀘스트_진행_트리': '/demo/quest-flow/',
   '데모/02_스토리_및_대화_대본': '/demo/dialogue/',
   '데모/03_간소_대화_모드': '/demo/compact-dialogue/',
+  '데모/04_영상_모음': '/demo/videos/',
   '정규/01_퀘스트_스토리_SSOT': '/main/quest-story/',
   '정규/02_퀘스트_대화집': '/main/dialogue/',
 };
