@@ -10,8 +10,29 @@ import horizontalH1 from '../assets/gallery/horizontal-h1-companions.png';
 import horizontalH4 from '../assets/gallery/horizontal-h4-profile.png';
 import horizontalSmg from '../assets/gallery/horizontal-smg-adventure.png';
 import horizontalEmbrace from '../assets/gallery/horizontal-embrace-poster.png';
+import libraryCapsule1 from '../assets/gallery/LibraryCapsule1.png';
+import libraryCapsule2 from '../assets/gallery/LibraryCapsule2.png';
+import libraryCapsule3 from '../assets/gallery/LibraryCapsule3.png';
 
 const artworks = [
+  {
+    image: libraryCapsule1,
+    title: '라이브러리 캡슐 01 · 지상 탐사',
+    meta: 'STEAM LIBRARY CAPSULE · 01',
+    alt: '황량한 지상에서 루나와 두더지가 탐사하는 Tuna Sweeper 라이브러리 캡슐',
+  },
+  {
+    image: libraryCapsule2,
+    title: '라이브러리 캡슐 02 · 지하 동행',
+    meta: 'STEAM LIBRARY CAPSULE · 02',
+    alt: '어두운 지하 시설에서 루나와 두더지가 함께 이동하는 Tuna Sweeper 라이브러리 캡슐',
+  },
+  {
+    image: libraryCapsule3,
+    title: '라이브러리 캡슐 03 · 노을의 휴식',
+    meta: 'STEAM LIBRARY CAPSULE · 03',
+    alt: '노을 진 폐허에서 루나와 두더지가 나란히 쉬는 Tuna Sweeper 라이브러리 캡슐',
+  },
   {
     image: horizontalEmbrace,
     title: '루나와 두더지 · 포옹 포스터',
@@ -71,14 +92,14 @@ const artworks = [
 
 <BaseLayout
   title="갤러리"
-  description="Tuna Sweeper의 텍스트와 로고 없는 채색 원본을 모아 보는 비주얼 갤러리"
+  description="Tuna Sweeper의 채색 원본과 스팀 라이브러리 캡슐을 모아 보는 비주얼 갤러리"
   activeSlug="gallery"
 >
   <article class="gallery-page">
     <header class="gallery-header">
-      <span>VISUAL ARCHIVE · TEXT-FREE ORIGINALS</span>
+      <span>VISUAL ARCHIVE · ORIGINAL ART &amp; STORE ASSETS</span>
       <h1>갤러리</h1>
-      <p>루나와 두더지의 채색 원본을 모았습니다. 썸네일을 누르면 배포 빌드에 포함된 원본 PNG를 오버레이로 확인할 수 있습니다.</p>
+      <p>루나와 두더지의 채색 원본과 스팀 라이브러리 캡슐을 모았습니다. 썸네일을 누르면 배포 빌드에 포함된 원본 PNG를 오버레이로 확인할 수 있습니다.</p>
       <p class="gallery-method">
         채색본은 <code>detail_level 2 · Balanced Detail</code>로 정리했으며, 세부 기준은
         <a href="https://github.com/octopus7/ChatGPT-Images-2" target="_blank" rel="noreferrer">ChatGPT-Images-2 원본 저장소 ↗</a>를 참고했습니다.
