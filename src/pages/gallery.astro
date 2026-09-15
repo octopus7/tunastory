@@ -1,18 +1,25 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getComparisonLabel } from '../lib/gallery-comparison.mjs';
 import mainTheatrical from '../assets/gallery/main-theatrical-crater.png';
+import mainTheatricalImprovedA from '../assets/gallery/main-theatrical-crater_2_5_A.png';
+import mainTheatricalImprovedB from '../assets/gallery/main-theatrical-crater_2_5_B.png';
 import vertical04 from '../assets/gallery/vertical-04-topdown.png';
 import vertical07 from '../assets/gallery/vertical-07-eye-level.png';
+import vertical07ImprovedA from '../assets/gallery/vertical-07-eye-level_2_5_A.png';
+import vertical07ImprovedB from '../assets/gallery/vertical-07-eye-level_2_5_B.png';
 import vertical08 from '../assets/gallery/vertical-08-foreground.png';
 import vertical11 from '../assets/gallery/vertical-11-running.png';
 import horizontalH1 from '../assets/gallery/horizontal-h1-companions.png';
 import horizontalH4 from '../assets/gallery/horizontal-h4-profile.png';
 import horizontalSmg from '../assets/gallery/horizontal-smg-adventure.png';
+import horizontalSmgImproved from '../assets/gallery/horizontal-smg-adventure_2_5.png';
 import horizontalEmbrace from '../assets/gallery/horizontal-embrace-poster.png';
 import libraryCapsule1 from '../assets/gallery/LibraryCapsule1.png';
 import libraryCapsule2 from '../assets/gallery/LibraryCapsule2.png';
 import libraryCapsule3 from '../assets/gallery/LibraryCapsule3.png';
+import libraryCapsule3Improved from '../assets/gallery/LibraryCapsule3_2_5.png';
 
 const artworks = [
   {
@@ -29,6 +36,9 @@ const artworks = [
   },
   {
     image: libraryCapsule3,
+    comparisons: [
+      { image: libraryCapsule3Improved, label: getComparisonLabel('LibraryCapsule3_2_5.png') },
+    ],
     title: '라이브러리 캡슐 03 · 노을의 휴식',
     meta: 'STEAM LIBRARY CAPSULE · 03',
     alt: '노을 진 폐허에서 루나와 두더지가 나란히 쉬는 Tuna Sweeper 라이브러리 캡슐',
@@ -41,12 +51,19 @@ const artworks = [
   },
   {
     image: horizontalSmg,
+    comparisons: [
+      { image: horizontalSmgImproved, label: getComparisonLabel('horizontal-smg-adventure_2_5.png') },
+    ],
     title: '루나와 두더지 · 모험 키아트',
     meta: 'HORIZONTAL · SMG ADVENTURE',
     alt: '따뜻한 동굴에서 SMG를 든 루나와 곁에 선 두더지의 가로 키아트',
   },
   {
     image: mainTheatrical,
+    comparisons: [
+      { image: mainTheatricalImprovedA, label: getComparisonLabel('main-theatrical-crater_2_5_A.png') },
+      { image: mainTheatricalImprovedB, label: getComparisonLabel('main-theatrical-crater_2_5_B.png') },
+    ],
     title: '절벽과 거대한 크레이터',
     meta: 'VERTICAL · MAIN THEATRICAL',
     alt: '루나와 두더지가 높은 절벽에서 거대한 크레이터를 바라보는 세로 포스터',
@@ -59,6 +76,10 @@ const artworks = [
   },
   {
     image: vertical07,
+    comparisons: [
+      { image: vertical07ImprovedA, label: getComparisonLabel('vertical-07-eye-level_2_5_A.png') },
+      { image: vertical07ImprovedB, label: getComparisonLabel('vertical-07-eye-level_2_5_B.png') },
+    ],
     title: '후보 07 · 눈높이의 교감',
     meta: 'VERTICAL · CANDIDATE 07',
     alt: '루나가 몸을 낮춰 두더지와 눈높이를 맞춘 세로 캡슐 후보',
@@ -131,8 +152,30 @@ const artworks = [
             <span class="gallery-card__action">원본 보기 ↗</span>
           </button>
           <figcaption>
-            <span>{art.meta}</span>
-            <strong>{art.title}</strong>
+            <div class="gallery-card__details">
+              <span>{art.meta}</span>
+              <strong>{art.title}</strong>
+            </div>
+            {art.comparisons && (
+              <div class="gallery-card__comparisons" aria-label="2.5 이미지 비교">
+                {art.comparisons.map((comparison) => (
+                  <button
+                    type="button"
+                    class="gallery-card__compare"
+                    data-gallery-compare
+                    data-original={art.image.src}
+                    data-improved={comparison.image.src}
+                    data-ratio={art.image.width / art.image.height}
+                    data-title={art.title}
+                    data-alt={art.alt}
+                    data-variant={comparison.label || ''}
+                    aria-label={`${art.title} ${comparison.label || '2.5'} 비교`}
+                  >
+                    <span aria-hidden="true">{comparison.label}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </figcaption>
         </figure>
       ))}
@@ -146,6 +189,38 @@ const artworks = [
       <p class="gallery-overlay__caption" data-gallery-caption></p>
     </section>
   </div>
+
+  <div class="gallery-overlay gallery-compare-overlay" data-gallery-compare-overlay hidden aria-hidden="true">
+    <section class="gallery-overlay__panel gallery-compare-overlay__panel" role="dialog" aria-modal="true" aria-label="원본과 2.5 이미지 비교">
+      <button class="gallery-overlay__close" type="button" data-gallery-compare-close aria-label="비교 이미지 닫기">×</button>
+      <div class="gallery-compare">
+        <div
+          class="gallery-compare__stage"
+          data-gallery-compare-stage
+          role="slider"
+          tabindex="0"
+          aria-orientation="horizontal"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="50"
+          aria-label="원본과 2.5 이미지 경계"
+        >
+          <img class="gallery-compare__image" data-gallery-compare-original src="" alt="" />
+          <div class="gallery-compare__improved-clip" data-gallery-compare-improved-clip>
+            <img class="gallery-compare__image" data-gallery-compare-improved src="" alt="" />
+          </div>
+          <div class="gallery-compare__divider" data-gallery-compare-divider aria-hidden="true">
+            <span>↔</span>
+          </div>
+        </div>
+        <div class="gallery-compare__legend" aria-hidden="true">
+          <span>ORIGINAL</span>
+          <span data-gallery-compare-variant>2.5</span>
+        </div>
+      </div>
+      <p class="gallery-overlay__caption" data-gallery-compare-caption></p>
+    </section>
+  </div>
 </BaseLayout>
 
 <script>
@@ -154,32 +229,95 @@ const artworks = [
   const caption = document.querySelector<HTMLElement>('[data-gallery-caption]');
   const closeButton = document.querySelector<HTMLButtonElement>('[data-gallery-close]');
   const openers = document.querySelectorAll<HTMLButtonElement>('[data-gallery-open]');
-  let lastOpener: HTMLButtonElement | null = null;
+  const compareOverlay = document.querySelector<HTMLElement>('[data-gallery-compare-overlay]');
+  const compareStage = document.querySelector<HTMLElement>('[data-gallery-compare-stage]');
+  const compareOriginal = document.querySelector<HTMLImageElement>('[data-gallery-compare-original]');
+  const compareImproved = document.querySelector<HTMLImageElement>('[data-gallery-compare-improved]');
+  const compareImprovedClip = document.querySelector<HTMLElement>('[data-gallery-compare-improved-clip]');
+  const compareDivider = document.querySelector<HTMLElement>('[data-gallery-compare-divider]');
+  const compareCaption = document.querySelector<HTMLElement>('[data-gallery-compare-caption]');
+  const compareVariant = document.querySelector<HTMLElement>('[data-gallery-compare-variant]');
+  const compareCloseButton = document.querySelector<HTMLButtonElement>('[data-gallery-compare-close]');
+  const comparisonOpeners = document.querySelectorAll<HTMLButtonElement>('[data-gallery-compare]');
+  let lastTrigger: HTMLButtonElement | null = null;
+  let isDragging = false;
+
+  const setOverlayState = (target: HTMLElement, isOpen: boolean) => {
+    target.hidden = !isOpen;
+    target.setAttribute('aria-hidden', String(!isOpen));
+    document.body.classList.toggle('gallery-overlay-open', isOpen);
+  };
 
   const closeGallery = () => {
     if (!overlay || overlay.hidden) return;
-    overlay.hidden = true;
-    overlay.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('gallery-overlay-open');
+    setOverlayState(overlay, false);
     if (fullImage) {
       fullImage.removeAttribute('src');
       fullImage.alt = '';
     }
-    lastOpener?.focus();
+    lastTrigger?.focus();
+  };
+
+  const setComparisonPosition = (value: number) => {
+    if (!compareStage) return;
+    const position = Math.min(100, Math.max(0, value));
+    compareStage.style.setProperty('--comparison-position', `${position}%`);
+    compareStage.setAttribute('aria-valuenow', String(Math.round(position)));
+    compareImprovedClip?.style.setProperty('clip-path', `inset(0 0 0 ${100 - position}%)`);
+    if (compareDivider) compareDivider.style.left = `${position}%`;
+  };
+
+  const updateComparisonFromPointer = (event: PointerEvent) => {
+    if (!compareStage) return;
+    const bounds = compareStage.getBoundingClientRect();
+    if (bounds.width === 0) return;
+    setComparisonPosition(((event.clientX - bounds.left) / bounds.width) * 100);
+  };
+
+  const closeComparison = () => {
+    if (!compareOverlay || compareOverlay.hidden) return;
+    setOverlayState(compareOverlay, false);
+    compareOriginal?.removeAttribute('src');
+    compareImproved?.removeAttribute('src');
+    compareOriginal?.removeAttribute('alt');
+    compareImproved?.removeAttribute('alt');
+    compareCaption && (compareCaption.textContent = '');
+    compareVariant && (compareVariant.textContent = '2.5');
+    compareStage?.style.removeProperty('--comparison-ratio');
+    setComparisonPosition(50);
+    lastTrigger?.focus();
   };
 
   openers.forEach((opener) => {
     opener.addEventListener('click', (event) => {
       if (!overlay || !fullImage || !caption) return;
       event.preventDefault();
-      lastOpener = opener;
+      lastTrigger = opener;
+      if (compareOverlay && !compareOverlay.hidden) closeComparison();
       fullImage.src = opener.dataset.full || '';
       fullImage.alt = opener.dataset.alt || '';
       caption.textContent = opener.dataset.title || '';
-      overlay.hidden = false;
-      overlay.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('gallery-overlay-open');
+      setOverlayState(overlay, true);
       closeButton?.focus();
+    });
+  });
+
+  comparisonOpeners.forEach((opener) => {
+    opener.addEventListener('click', (event) => {
+      if (!compareOverlay || !compareStage || !compareOriginal || !compareImproved) return;
+      event.preventDefault();
+      lastTrigger = opener;
+      if (overlay && !overlay.hidden) closeGallery();
+      compareOriginal.src = opener.dataset.original || '';
+      compareImproved.src = opener.dataset.improved || '';
+      compareOriginal.alt = `${opener.dataset.alt || ''} 원본`;
+      compareImproved.alt = `${opener.dataset.alt || ''} 2.5 개선 이미지`;
+      if (compareCaption) compareCaption.textContent = opener.dataset.title || '';
+      if (compareVariant) compareVariant.textContent = `2.5 ${opener.dataset.variant || ''}`.trim();
+      compareStage.style.setProperty('--comparison-ratio', opener.dataset.ratio || '1');
+      setComparisonPosition(50);
+      setOverlayState(compareOverlay, true);
+      compareCloseButton?.focus();
     });
   });
 
@@ -187,11 +325,74 @@ const artworks = [
   overlay?.addEventListener('click', (event) => {
     if (event.target === overlay) closeGallery();
   });
+  compareCloseButton?.addEventListener('click', closeComparison);
+  compareOverlay?.addEventListener('click', (event) => {
+    if (event.target === compareOverlay) closeComparison();
+  });
+
+  compareStage?.addEventListener('pointerdown', (event) => {
+    isDragging = true;
+    compareStage.setPointerCapture(event.pointerId);
+    updateComparisonFromPointer(event);
+  });
+  compareStage?.addEventListener('pointermove', (event) => {
+    if (isDragging) updateComparisonFromPointer(event);
+  });
+  compareStage?.addEventListener('pointerup', (event) => {
+    isDragging = false;
+    compareStage.releasePointerCapture(event.pointerId);
+  });
+  compareStage?.addEventListener('pointercancel', (event) => {
+    isDragging = false;
+    compareStage.releasePointerCapture(event.pointerId);
+  });
+  compareStage?.addEventListener('keydown', (event) => {
+    const current = Number(compareStage.getAttribute('aria-valuenow')) || 50;
+    const step = event.shiftKey ? 10 : 5;
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      setComparisonPosition(current - step);
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      setComparisonPosition(current + step);
+    } else if (event.key === 'Home') {
+      event.preventDefault();
+      setComparisonPosition(0);
+    } else if (event.key === 'End') {
+      event.preventDefault();
+      setComparisonPosition(100);
+    }
+  });
+
   window.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeGallery();
+    if (event.key !== 'Escape') return;
+    if (compareOverlay && !compareOverlay.hidden) closeComparison();
+    else closeGallery();
   });
 </script>
 
 <style>
   .gallery-page{max-width:1440px;margin:0 auto;padding:78px clamp(24px,5vw,76px) 110px}.gallery-header{max-width:860px;margin:0 0 56px}.gallery-header>span{font:700 9px Inter,sans-serif;letter-spacing:.17em;color:#817a70}.gallery-header h1{font-family:'Gowun Dodum',sans-serif;font-size:clamp(48px,8vw,88px);font-weight:400;line-height:1;letter-spacing:-.06em;margin:22px 0 24px}.gallery-header>p{max-width:720px;font-family:'Gowun Dodum',sans-serif;font-size:16px;line-height:1.75;color:#666159;margin:0}.gallery-header .gallery-method{margin-top:18px;padding:17px 20px;background:#f1ece3;border:1px solid rgba(32,32,30,.1);border-radius:16px;font-size:13px}.gallery-method code{font-family:Inter,sans-serif;font-size:11px;color:#1f3c35}.gallery-method a{color:#176759;text-decoration:underline;text-underline-offset:3px}.gallery-grid{columns:3 280px;column-gap:18px}.gallery-card{display:inline-block;width:100%;break-inside:avoid;margin:0 0 22px;padding:8px;background:#fff;border:1px solid rgba(32,32,30,.11);border-radius:18px;box-shadow:0 10px 32px rgba(44,35,23,.06);overflow:hidden}.gallery-card__open{display:block;width:100%;padding:0;border:0;position:relative;border-radius:12px;overflow:hidden;background:#e7e1d8;color:inherit;font:inherit;text-align:inherit;cursor:zoom-in}.gallery-card__open img{display:block;width:100%;height:auto;transition:transform .35s ease,filter .35s ease}.gallery-card__action{position:absolute;right:12px;bottom:12px;padding:8px 11px;border-radius:12px;background:rgba(22,25,23,.78);backdrop-filter:blur(8px);color:#fff;font:600 10px Inter,sans-serif;letter-spacing:.04em;opacity:0;transform:translateY(5px);transition:.22s ease}.gallery-card__open:hover img{transform:scale(1.018);filter:saturate(1.04)}.gallery-card__open:hover .gallery-card__action,.gallery-card__open:focus-visible .gallery-card__action{opacity:1;transform:none}.gallery-card figcaption{display:flex;flex-direction:column;gap:5px;padding:13px 6px 6px}.gallery-card figcaption span{font:700 8px Inter,sans-serif;letter-spacing:.15em;color:#8b847a}.gallery-card figcaption strong{font-family:'Gowun Dodum',sans-serif;font-size:14px;font-weight:400;color:#292824}.gallery-overlay[hidden]{display:none}.gallery-overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:clamp(14px,3vw,42px);background:rgba(10,12,11,.9);backdrop-filter:blur(16px)}.gallery-overlay__panel{position:relative;display:flex;flex-direction:column;align-items:center;max-width:min(94vw,1500px);max-height:92vh}.gallery-overlay__image{display:block;max-width:100%;max-height:calc(92vh - 42px);width:auto;height:auto;object-fit:contain;border-radius:10px;box-shadow:0 26px 90px rgba(0,0,0,.5)}.gallery-overlay__caption{position:absolute;left:12px;bottom:10px;margin:0;padding:8px 11px;border-radius:10px;background:rgba(11,13,12,.74);color:#fff;font:500 11px 'Gowun Dodum',sans-serif;backdrop-filter:blur(8px)}.gallery-overlay__close{position:absolute;right:-13px;top:-13px;z-index:2;width:38px;height:38px;border:1px solid rgba(255,255,255,.38);border-radius:50%;background:#f6f3ed;color:#20201e;font:300 25px/1 Inter,sans-serif;cursor:pointer;box-shadow:0 6px 22px rgba(0,0,0,.25)}:global(body.gallery-overlay-open){overflow:hidden}@media(max-width:720px){.gallery-page{padding:54px 18px 80px}.gallery-header{margin-bottom:36px}.gallery-header h1{font-size:54px}.gallery-header>p{font-size:14px}.gallery-grid{columns:1}.gallery-card{margin-bottom:16px}.gallery-card__action{opacity:1;transform:none}.gallery-overlay{padding:10px}.gallery-overlay__image{max-height:calc(94vh - 28px);border-radius:7px}.gallery-overlay__close{right:6px;top:6px}.gallery-overlay__caption{left:7px;right:7px;bottom:7px;text-align:center}}
+</style>
+
+<style>
+  .gallery-card figcaption{flex-direction:row;align-items:center;justify-content:space-between;gap:12px}
+  .gallery-card__details{min-width:0;display:flex;flex-direction:column;gap:5px}
+  .gallery-card__details strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .gallery-card__comparisons{display:flex;align-items:center;gap:5px;flex:0 0 auto;margin-left:auto}
+  .gallery-card__compare{display:grid;place-items:center;width:29px;height:29px;padding:0;border:1px solid rgba(31,60,53,.22);border-radius:50%;background:#f4f8f5;color:#1f3c35;font:600 11px/1 Inter,sans-serif;cursor:ew-resize;transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease}
+  .gallery-card__compare:hover,.gallery-card__compare:focus-visible{border-color:#1f3c35;background:#1f3c35;color:#fff;transform:translateY(-1px);outline:none}
+  .gallery-card figcaption .gallery-card__compare span{font:600 11px/1 Inter,sans-serif;letter-spacing:0;color:inherit}
+  .gallery-compare-overlay__panel{width:min(96vw,1600px)}
+  .gallery-compare{display:flex;flex-direction:column;align-items:center;width:100%}
+  .gallery-compare__stage{--comparison-position:50%;--comparison-ratio:1;position:relative;width:min(92vw,calc(78vh * var(--comparison-ratio)));height:min(78vh,calc(92vw / var(--comparison-ratio)));overflow:hidden;border:1px solid rgba(255,255,255,.28);border-radius:10px;background:#161a18;box-shadow:0 26px 90px rgba(0,0,0,.5);cursor:ew-resize;touch-action:none;user-select:none;outline:none}
+  .gallery-compare__stage:focus-visible{outline:3px solid #f0d36f;outline-offset:4px}
+  .gallery-compare__image,.gallery-compare__improved-clip{position:absolute;inset:0;width:100%;height:100%}
+  .gallery-compare__image{display:block;object-fit:cover;pointer-events:none}
+  .gallery-compare__improved-clip{overflow:hidden;clip-path:inset(0 0 0 calc(100% - var(--comparison-position)))}
+  .gallery-compare__divider{position:absolute;top:0;bottom:0;left:var(--comparison-position);z-index:2;width:2px;transform:translateX(-1px);background:#fff;box-shadow:0 0 0 1px rgba(16,25,21,.28),0 0 18px rgba(0,0,0,.42);pointer-events:none}
+  .gallery-compare__divider span{position:absolute;top:50%;left:50%;display:grid;place-items:center;width:38px;height:38px;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.65);border-radius:50%;background:rgba(21,27,24,.84);color:#fff;font:500 18px/1 Inter,sans-serif;backdrop-filter:blur(8px)}
+  .gallery-compare__legend{display:flex;justify-content:space-between;width:100%;margin-top:12px;padding:0 2px;color:rgba(255,255,255,.78);font:700 9px/1 Inter,sans-serif;letter-spacing:.14em}
+  .gallery-compare-overlay__panel>.gallery-overlay__caption{position:static;align-self:flex-start;margin:15px 0 0;padding:8px 11px;background:rgba(11,13,12,.74)}
+  @media(max-width:720px){.gallery-card figcaption{gap:8px}.gallery-card__compare{width:28px;height:28px}.gallery-compare-overlay__panel{width:100%;max-width:100%}.gallery-compare__stage{width:min(94vw,calc(74vh * var(--comparison-ratio)));height:min(74vh,calc(94vw / var(--comparison-ratio)))}.gallery-compare__legend{font-size:8px}.gallery-compare-overlay__panel>.gallery-overlay__caption{align-self:stretch;text-align:center}}
 </style>
