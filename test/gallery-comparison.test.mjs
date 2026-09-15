@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { getComparisonLabel } from '../src/lib/gallery-comparison.mjs';
+import * as galleryComparison from '../src/lib/gallery-comparison.mjs';
+const { getComparisonLabel } = galleryComparison;
 
 test('returns A or B for lettered 2.5 variants', () => {
   assert.equal(getComparisonLabel('vertical-07-eye-level_2_5_A.png'), 'A');
@@ -14,4 +15,9 @@ test('returns the sparkle label for an unlettered 2.5 variant', () => {
 
 test('returns null for an image without a 2.5 suffix', () => {
   assert.equal(getComparisonLabel('vertical-07-eye-level.png'), null);
+});
+
+test('clips the improved image from the divider position to the right', () => {
+  assert.equal(galleryComparison.getComparisonClipPath?.(20), 'inset(0 0 0 20%)');
+  assert.equal(galleryComparison.getComparisonClipPath?.(50), 'inset(0 0 0 50%)');
 });
